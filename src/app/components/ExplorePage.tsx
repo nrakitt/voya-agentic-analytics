@@ -557,7 +557,13 @@ export function ExplorePage() {
       {/* ─── PHASE 3: ANOMALY PREVIEW (no conversation yet) ───────── */}
       {phase === "anomaly-preview" && previewAnomalyInsight && anomalyPreviewPrimaryFindingModel && (
         anomalyAwaitingReasoning === previewAnomalyInsight.id ? (
-          <div className="flex h-full w-full items-center justify-center" />
+          <ConversationDashboardArea
+            isThinking
+            dashboardData={null}
+            anomalyPrimaryFinding={null}
+            conversationTitle={previewAnomalyInsight.title}
+            hasCompletedAssistantMessage={false}
+          />
         ) : (
           <ConversationDashboardArea
             isThinking={false}
