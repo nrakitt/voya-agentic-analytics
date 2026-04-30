@@ -218,6 +218,16 @@ const topInsightOpportunityCards: TopInsightCard[] = automationTopInsightReferen
 
 export const topInsightsCards: TopInsightCard[] = [
   {
+    id: 3,
+    segment: "anomaly",
+    severity: "Critical",
+    title: "Disruption Rebookings: Fare-Rule Mismatch on 6,200 Travelers",
+    description:
+      "Same fare-class error Copilot caught in Maya's case — now showing up at scale on Copilot-off specialist rebookings.",
+    detail: "Re-contact rate +340% · 6,200 travelers · $5.2M latent risk",
+    timestamp: "1h ago",
+  },
+  {
     id: 1,
     segment: "anomaly",
     severity: "Critical",
@@ -980,6 +990,201 @@ const aiAgentsStrugglingToolSteps: AssistantReplyPayload["toolSteps"] = [
   { label: "Match each failure to a repair pattern", status: "done", detail: "Knowledge / tool / training — three different fast paths, ranked by speed-to-recover." },
 ];
 
+// ── Beat 2 — Anomaly + Root Cause (disruption rebooking fare-rule mismatch) ──
+
+function buildDisruptionRebookingDashboard(): DashboardData {
+  return {
+    id: "mock-dash-disruption-rebooking",
+    title: "Disruption Rebooking Anomaly — Fare-Rule Mismatch",
+    description:
+      "Re-contact rate spike traced to a fare-rule mismatch on partner-airline rebookings during the Frankfurt event",
+    metrics: [
+      { label: "Re-Contact Rate", value: "27.4% (+340%)" },
+      { label: "Travelers Affected", value: "6,200" },
+      { label: "Latent Dispute Risk", value: "$5.2M" },
+      { label: "Recoverable in 6h", value: "$4.4M" },
+    ],
+    chartData: {
+      trend: [
+        { date: "00:00", interactions: 1.8 },
+        { date: "01:00", interactions: 2.1 },
+        { date: "02:00", interactions: 2.4 },
+        { date: "03:00", interactions: 4.6 },
+        { date: "04:00", interactions: 8.9 },
+        { date: "05:00", interactions: 14.7 },
+        { date: "06:00", interactions: 21.3 },
+        { date: "07:00", interactions: 27.4 },
+        { date: "08:00", interactions: 26.1 },
+        { date: "09:00", interactions: 24.0 },
+      ],
+      breakdown: [
+        { category: "Partner A — Premium Cabin", volume: 2840 },
+        { category: "Partner B — Premium Cabin", volume: 1720 },
+        { category: "Partner C — Premium Cabin", volume: 1190 },
+        { category: "Partner A — Multi-Leg International", volume: 320 },
+        { category: "Other", volume: 130 },
+      ],
+    },
+    relevantInteractions: [
+      {
+        id: "VYA-2026-0428-3491",
+        channel: "voice",
+        direction: "inbound",
+        initiated: "Apr 28, 04:42 UTC",
+        duration: "00:04:18",
+        skill: "Disruption Rebooking",
+        sentiment: 18,
+        score: 42.1,
+        flag: "fare-mismatch",
+      },
+      {
+        id: "VYA-2026-0428-3608",
+        channel: "voice",
+        direction: "inbound",
+        initiated: "Apr 28, 04:51 UTC",
+        duration: "00:06:42",
+        skill: "Disruption Rebooking",
+        sentiment: 22,
+        score: 38.5,
+        flag: "fare-mismatch",
+      },
+      {
+        id: "VYA-2026-0428-3712",
+        channel: "chat",
+        direction: "inbound",
+        initiated: "Apr 28, 05:03 UTC",
+        duration: "00:09:14",
+        skill: "Disruption Rebooking",
+        sentiment: 31,
+        score: 51.2,
+        flag: "fare-mismatch",
+      },
+      {
+        id: "VYA-2026-0428-3845",
+        channel: "voice",
+        direction: "inbound",
+        initiated: "Apr 28, 05:12 UTC",
+        duration: "00:03:55",
+        skill: "Premium Recovery",
+        sentiment: 14,
+        score: 36.8,
+        flag: "fare-mismatch",
+      },
+      {
+        id: "VYA-2026-0428-4002",
+        channel: "email",
+        direction: "inbound",
+        initiated: "Apr 28, 05:24 UTC",
+        duration: "00:00:00",
+        skill: "Disruption Rebooking",
+        sentiment: 28,
+        score: 44.0,
+        flag: "fare-mismatch",
+      },
+      {
+        id: "VYA-2026-0428-4187",
+        channel: "voice",
+        direction: "inbound",
+        initiated: "Apr 28, 05:40 UTC",
+        duration: "00:07:22",
+        skill: "Disruption Rebooking",
+        sentiment: 25,
+        score: 41.5,
+        flag: "fare-mismatch",
+      },
+      {
+        id: "VYA-2026-0428-4295",
+        channel: "web",
+        direction: "inbound",
+        initiated: "Apr 28, 05:58 UTC",
+        duration: "00:04:08",
+        skill: "Disruption Rebooking",
+        sentiment: 35,
+        score: 53.7,
+        flag: "fare-mismatch",
+      },
+      {
+        id: "VYA-2026-0428-4412",
+        channel: "chat",
+        direction: "inbound",
+        initiated: "Apr 28, 06:14 UTC",
+        duration: "00:11:32",
+        skill: "Premium Recovery",
+        sentiment: 42,
+        score: 58.3,
+        flag: "fare-mismatch",
+      },
+      {
+        id: "VYA-2026-0428-4501",
+        channel: "voice",
+        direction: "inbound",
+        initiated: "Apr 28, 06:29 UTC",
+        duration: "00:05:48",
+        skill: "Disruption Rebooking",
+        sentiment: 19,
+        score: 39.2,
+        flag: "fare-mismatch",
+      },
+      {
+        id: "VYA-2026-0428-4623",
+        channel: "voice",
+        direction: "inbound",
+        initiated: "Apr 28, 06:47 UTC",
+        duration: "00:08:14",
+        skill: "Disruption Rebooking",
+        sentiment: 48,
+        score: 62.4,
+      },
+    ],
+  };
+}
+
+const disruptionRebookingContent = `Re-contact rate on disruption rebookings spiked 340% overnight. Root cause: 6,200 travelers were booked into outdated partner-airline fare classes — the same fare-rule mismatch Copilot caught in Maya's escalation, now showing up at scale across Copilot-off specialists.
+
+ROOT CAUSE
+
+The disruption agent rebooked travelers using fare rules cached at 02:00 UTC. Three partner airlines updated their premium-cabin fare rules at 02:34 UTC — 34 minutes into the rebooking surge. Copilot caught the mismatch in real time on Maya's case (1 specialist, Copilot active). The same error went uncaught across 6,200 other rebookings.
+
+WHO'S AFFECTED
+
+• 6,200 travelers — premium cabin rebookings on partner airlines
+• 91% are Platinum or Gold tier — same disruption pattern as Maya Chen
+• 84% on multi-leg international itineraries
+• Inbound surge already starting (re-contact rate +340%)
+
+PROOF — Sample interactions below
+
+Sentiment scores cratering on these calls. Travelers see the wrong fare class on the partner-airline app or at check-in and call back. Specialist screen recordings confirm the fare-class mismatch.
+
+ACTIONS
+
+1. Guardian Agent: outreach to all 6,200 travelers — auto-rebook with corrected fare rules and apply SLA credit. Closes the loop before inbound surge peaks.
+2. Force Copilot-on for all disruption specialists — eliminates the manual error path that didn't catch the rule update.
+3. Sync partner-airline fare rules into the disruption agent every 15 minutes (currently every 4 hours).
+
+Target: re-contact rate back to baseline within 6 hours. $4.4M of the $5.2M latent risk preventable if Guardian Agent ships outreach in the next 30 minutes.`;
+
+const disruptionRebookingReasoning =
+  "I framed this as a multi-source attribution, not a single-driver lookup. I started from the re-contact rate spike (the symptom), pulled the specific interactions driving it, and clustered by reason code. The cluster surfaced a 100% match with partner-airline premium-cabin rebookings. Cross-referencing with the partner fare-rule update log revealed a 34-minute window where the disruption agent's cached rules were stale. The single Copilot-active case (Maya's) showed the error caught and corrected in real time — proving Copilot is the lever. Actions ordered by recoverable risk × time-to-ship: Guardian Agent outreach has both the largest latent risk and the fastest deployment path.";
+
+const disruptionRebookingSources = [
+  { label: "Re-contact rate timeseries (hourly)", url: "/explore", snippet: "Baseline 1.9% → peak 27.4% over 8 hours; concentrated on disruption rebooking skill" },
+  { label: "Disruption agent rebooking action log", url: "/explore", snippet: "6,200 partner-airline premium-cabin rebookings between 02:00-04:30 UTC" },
+  { label: "Partner-airline fare-rule update log", url: "/explore", snippet: "3 partners pushed updated premium-cabin rules at 02:34 UTC; agent's cache last refreshed 02:00" },
+  { label: "Copilot screen-intelligence trace — Maya's case", url: "/explore", snippet: "Copilot caught fare-class mismatch in real time; specialist corrected before submission" },
+  { label: "Voya-Premium specialist screen recordings", url: "/explore", snippet: "Sample of 12 Copilot-off specialists; 11 booked the outdated fare class" },
+  { label: "Inbound queue forecast", url: "/explore", snippet: "Projected +14,000 inbound calls in next 6 hours if no proactive action" },
+];
+
+const disruptionRebookingToolSteps: AssistantReplyPayload["toolSteps"] = [
+  { label: "Detect re-contact rate anomaly", status: "done", detail: "Re-contact rate +340% on disruption rebooking skill; isolated to last 8 hours." },
+  { label: "Pull driving interactions", status: "done", detail: "6,200 inbound contacts cluster on \"fare class\" + \"different than booked\" intents." },
+  { label: "Cross-reference partner fare-rule logs", status: "done", detail: "3 partners updated premium-cabin rules at 02:34 UTC; disruption agent cache stale by 34 min." },
+  { label: "Compare Copilot-on vs Copilot-off cohorts", status: "done", detail: "Copilot caught the mismatch in Maya's case (1/1); Copilot-off rebookings missed it (6,200 cases)." },
+  { label: "Quantify latent risk + recovery path", status: "done", detail: "$5.2M latent dispute exposure; $4.4M recoverable if Guardian Agent outreach ships in 30 min." },
+  { label: "Score Maya-pattern travelers for outreach", status: "done", detail: "6,200 travelers identified for proactive Guardian Agent contact, ordered by tier and downstream impact." },
+];
+
 function generateAIResponseCore(userMessage: string): ExploreAIResponse {
   const mock = () => buildMockAssistantFields(userMessage);
   const lowerMessage = userMessage.toLowerCase();
@@ -987,6 +1192,24 @@ function generateAIResponseCore(userMessage: string): ExploreAIResponse {
   const wantsDashboard = lowerMessage.includes("dashboard");
 
   const widgetData = wantsWidget ? generateWidgetData(userMessage) : undefined;
+
+  // Disruption rebooking fare-rule mismatch (Beat 2) — most specific, checked first.
+  if (
+    lowerMessage.includes("fare-rule mismatch") ||
+    lowerMessage.includes("fare rule mismatch") ||
+    lowerMessage.includes("re-contact") ||
+    lowerMessage.includes("disruption rebooking") ||
+    (lowerMessage.includes("fare") && lowerMessage.includes("6,200")) ||
+    (lowerMessage.includes("fare") && lowerMessage.includes("rebook"))
+  ) {
+    return {
+      content: disruptionRebookingContent,
+      reasoning: disruptionRebookingReasoning,
+      sources: disruptionRebookingSources,
+      toolSteps: disruptionRebookingToolSteps,
+      dashboardData: buildDisruptionRebookingDashboard(),
+    };
+  }
 
   // AI agents struggling / refund agent — checked first so they take priority
   // over the broader containment / disruption matchers below.

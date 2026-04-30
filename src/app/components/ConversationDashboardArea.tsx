@@ -51,6 +51,7 @@ import {
 } from "./ui/select";
 import { DashboardData } from "../contexts/ConversationContext";
 import { DashboardChartGrid } from "./ChartVariants";
+import { InteractionsTable } from "./InteractionsTable";
 import { WidgetAIProvider } from "../contexts/WidgetAIContext";
 import { HeaderAIInsightsRow } from "./HeaderAIInsightsRow";
 import type { DashboardSuggestedAction } from "./DashboardAISummary";
@@ -923,6 +924,13 @@ function DashboardContent({
           category={chartCategoryDataset}
           expandSingletonRows
         />
+
+        {/* Drill-down: relevant interactions that prove the anomaly's root cause */}
+        {dashboard.relevantInteractions && dashboard.relevantInteractions.length > 0 ? (
+          <div className="!mt-8">
+            <InteractionsTable interactions={dashboard.relevantInteractions} />
+          </div>
+        ) : null}
         </div>
         </div>
       </div>

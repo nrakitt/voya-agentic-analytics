@@ -17,6 +17,33 @@ export interface DashboardData {
     trend?: ChartRow[];
     breakdown?: ChartRow[];
   };
+  /**
+   * Optional drill-down list of contact-center interactions that prove the
+   * dashboard's anomaly / root cause. Rendered as a table on the dashboard.
+   */
+  relevantInteractions?: InteractionRow[];
+}
+
+export type InteractionChannel = "voice" | "chat" | "email" | "web";
+export type InteractionDirection = "inbound" | "outbound";
+
+export interface InteractionRow {
+  /** Display id, e.g. "VYA-2026-0428-3491". */
+  id: string;
+  channel: InteractionChannel;
+  direction: InteractionDirection;
+  /** ISO 8601 or human-readable timestamp shown verbatim. */
+  initiated: string;
+  /** Display duration, e.g. "00:15:42". */
+  duration: string;
+  /** Skill / queue, e.g. "Disruption Rebooking". */
+  skill: string;
+  /** 0–100; drives the sentiment bar visualization. */
+  sentiment: number;
+  /** Hybrid CX score, e.g. 42.1. */
+  score: number;
+  /** Optional callout — used to highlight rows tied to the anomaly's root cause. */
+  flag?: "fare-mismatch" | "rebooking-loop" | "policy-breach";
 }
 
 /** Badge + anchor metadata when a user prompt originates from a widget. */
