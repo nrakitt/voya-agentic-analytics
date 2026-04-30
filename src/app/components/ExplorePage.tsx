@@ -54,6 +54,8 @@ type ExploreFirstMessageOptions = {
 type ExploreGlobalAssistantMessageOptions = {
   promptSource?: "investigation" | "widget";
   widgetMeta?: WidgetMessageMeta;
+  /** Fires once the AI Assist panel has finished its tool-step / reasoning phase. */
+  onReasoningReady?: () => void;
 };
 
 function buildTopInsightInvestigationPrompt(
@@ -108,6 +110,9 @@ export function ExplorePage() {
   const [isThinking, setIsThinking] = useState(false);
   const [showTypeahead, setShowTypeahead] = useState(false);
   const [forcedSuggestions, setForcedSuggestions] = useState<string[]>([]);
+  // Gates the anomaly-preview main-screen render until the AI Assist panel
+  // has finished its reasoning phase. Insight id while pending, null once ready.
+  const [anomalyAwaitingReasoning, setAnomalyAwaitingReasoning] = useState<number | null>(null);
 
   // Input slide-down animation state
   const [isInputAnimating, setIsInputAnimating] = useState(false);
@@ -232,6 +237,7 @@ export function ExplorePage() {
       setConversationName("");
       setMessages([]);
       setIsThinking(false);
+      setAnomalyAwaitingReasoning(null);
     }
   }, [params.conversationId, params.insightId]);
 
@@ -373,6 +379,10 @@ export function ExplorePage() {
         },
         isCancelled: () => gen !== exploreGlobalAssistantPhaseGenRef.current,
         patch: (partial) => patchMessage(GLOBAL_AI_ASSISTANT_KEY, assistantId, partial),
+        onReasoningReady: () => {
+          if (gen !== exploreGlobalAssistantPhaseGenRef.current) return;
+          options?.onReasoningReady?.();
+        },
       });
     },
     [voice.stop, appendMessage, patchMessage],
@@ -420,8 +430,12 @@ export function ExplorePage() {
       if (insight.segment === "anomaly") {
         navigate(ROUTES.ANOMALY_INVESTIGATION(insight.id));
         aiAssistantPanelControl?.openPanel();
+        setAnomalyAwaitingReasoning(insight.id);
         sendExploreGlobalAssistantMessage(buildTopInsightInvestigationPrompt(insight), {
           promptSource: "investigation",
+          onReasoningReady: () => {
+            setAnomalyAwaitingReasoning((current) => (current === insight.id ? null : current));
+          },
         });
         return;
       }
@@ -542,15 +556,19 @@ export function ExplorePage() {
 
       {/* ─── PHASE 3: ANOMALY PREVIEW (no conversation yet) ───────── */}
       {phase === "anomaly-preview" && previewAnomalyInsight && anomalyPreviewPrimaryFindingModel && (
-        <ConversationDashboardArea
-          isThinking={false}
-          dashboardData={null}
-          anomalyPrimaryFinding={anomalyPreviewPrimaryFindingModel}
-          conversationTitle={previewAnomalyInsight.title}
-          hasCompletedAssistantMessage
-          anomalyHeadingActionLabel="Investigate Further"
-          onAnomalyHeadingAction={handleAnomalyPreviewInvestigateFurther}
-        />
+        anomalyAwaitingReasoning === previewAnomalyInsight.id ? (
+          <div className="flex h-full w-full items-center justify-center" />
+        ) : (
+          <ConversationDashboardArea
+            isThinking={false}
+            dashboardData={null}
+            anomalyPrimaryFinding={anomalyPreviewPrimaryFindingModel}
+            conversationTitle={previewAnomalyInsight.title}
+            hasCompletedAssistantMessage
+            anomalyHeadingActionLabel="Investigate Further"
+            onAnomalyHeadingAction={handleAnomalyPreviewInvestigateFurther}
+          />
+        )
       )}
     </div>
   );

@@ -53,6 +53,12 @@ export async function runPhasedAssistantReply(options: {
    * Explore uses this to attach `dashboardData` / `widgetData` while the reply streams.
    */
   withStreamStart?: Record<string, unknown>;
+  /**
+   * Fires once the tool-step phase has completed and reasoning is ready to display
+   * — i.e., right before content streaming begins. Callers can use this to delay
+   * downstream UI (like populating a dashboard area) until the reasoning trace is in.
+   */
+  onReasoningReady?: () => void;
 }): Promise<void> {
   const { final, patch, isCancelled } = options;
   const beforeFirstStepMs = options.beforeFirstStepMs ?? 500;
@@ -73,6 +79,7 @@ export async function runPhasedAssistantReply(options: {
       toolSteps: undefined,
       ...(options.withStreamStart ?? {}),
     } as Partial<ChatMessage>);
+    options.onReasoningReady?.();
     await streamAssistantContent({
       fullText: final.content,
       patch,
