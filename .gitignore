@@ -1,0 +1,15 @@
+.next
+node_modules
+out
+dist
+.vite
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.env*
+.vercel
+.env*.local
+playwright-report
+test-results
