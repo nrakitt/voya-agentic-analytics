@@ -256,6 +256,51 @@ function createSuggestedAction(
 }
 
 const dashboardSummaries: Record<string, AISummaryData> = {
+  "ai-agent-evaluation": {
+    summary:
+      "Evaluation health is mixed. Compliance is steady at 89% and brand alignment holds at 71%, but containment dropped to 73% and 769 conversations escalated this week — 530 of those (69%) flagged as potentially avoidable. The strongest signal: 12% of conversations hit a tool gap, and those escalate 84% of the time.",
+    bullets: [
+      {
+        label: "Tool gap is the top escalation driver",
+        detail:
+          "12% tool-gap conversations escalate 84% of the time. Partner airline rebookings and loyalty-status lookups dominate the misses, especially across the overnight Frankfurt disruption.",
+      },
+      {
+        label: "Knowledge gap is close behind",
+        detail:
+          "18% of conversations hit a knowledge gap; hotel and car voucher questions account for ~40% of those. 71% escalate when a knowledge gap is present.",
+      },
+      {
+        label: "769 escalated, 530 potentially avoidable",
+        detail:
+          "Complex Issue and User Request handover reasons together represent the largest avoidable bucket — addressable with the next two skill builds.",
+      },
+      {
+        label: "114 non-compliant conversations",
+        detail:
+          "SLA breaches concentrated in disruption rebooking flows where specialist queues backed up overnight; closing the partner-airline skill removes the queue.",
+      },
+    ],
+    linkedActionId: 8,
+    suggestedActions: [
+      createSuggestedAction(8, {
+        cardDescription:
+          "12% of conversations hit a tool gap and 84% of those escalate. A Partner Airline Seat skill lets Voya-Rebooking and Voya-Disruption complete partner-carrier rebookings without specialist handoff — directly absorbing last night's 6,200-traveler workload.",
+      }),
+      createSuggestedAction(10, {
+        cardDescription:
+          "71% of knowledge-gap conversations escalate. Hotel and car voucher policy is the top missing topic — publishing this collection closes the largest knowledge gap surfaced this week and stabilizes overnight ground-recovery flows.",
+      }),
+      createSuggestedAction(9, {
+        cardDescription:
+          "Loyalty intents escalate 73% of the time because Copilot lacks read access to the mileage system. Granting tier and mileage lookup eliminates the manual specialist step that frustrates Platinum travelers during disruption events.",
+      }),
+    ],
+    opportunity:
+      "12% of conversations hit a tool gap and escalate 84% of the time — partner airline rebookings and loyalty lookups are the top two missing skills, and hotel/car voucher knowledge is the top missing topic.",
+    actionText:
+      "Stand up the Partner Airline Seat Booking skill first to absorb the 6,200-traveler rebooking workload, then close the disruption-voucher knowledge gap and the loyalty lookup skill.",
+  },
   "knowledge-performance-overview": {
     summary:
       "Knowledge performance remains strong overall, with retrieval quality and positive feedback trends continuing to improve while key content gaps are now clearly identified.",

@@ -1,6 +1,6 @@
 // Shared recommended actions data & types
 
-import { ShieldCheck, Code, Cpu, Wrench, Route, CreditCard, Bot } from "lucide-react";
+import { ShieldCheck, Code, Cpu, Wrench, Route, CreditCard, Bot, Plane, Award, BookOpen } from "lucide-react";
 import type { ComponentType } from "react";
 
 export type ActionType = "Tool Build" | "AI Agent" | "Process Change";
@@ -157,6 +157,63 @@ export const recommendedActionsData: RecommendedAction[] = [
     whatWillHappen:
       "Common billing inquiries (balance checks, payment status, invoice requests) will be fully automated. The AI agent will connect to the billing system API to provide instant, accurate responses to 18% of total support volume.",
   },
+  {
+    id: 8,
+    title: "Create Skill: Partner Airline Seat Booking",
+    description:
+      "Enable AI agents to look up partner-airline inventory and complete rebookings autonomously",
+    note: "Frankfurt fare-mismatch — 6,200 travelers required manual partner-carrier rebooking overnight",
+    type: "Tool Build",
+    priority: "High",
+    impactValue: "+18pp Containment",
+    impactLabel: "Disruption rebooking flows",
+    projectedROI: "$1.4M/yr",
+    handoffsPerDay: 6200,
+    affectedIntent: "Disruption Rebooking",
+    escalationsToday: 6200,
+    csatImpact: "+11.4%",
+    estFixTime: "< 2 hours",
+    whatWillHappen:
+      "Voya-Rebooking and Voya-Disruption agents will gain a Partner Airline Seat skill that queries Star Alliance partner inventory and confirms rebookings without specialist handoff. Closes the single largest tool gap (12% of conversations) currently driving 84% of tool-gap escalations.",
+  },
+  {
+    id: 9,
+    title: "Create Skill: Loyalty Status & Mileage Lookup",
+    description:
+      "Allow AI agents to verify Voya Elite tier and mileage balances in real time",
+    note: "Loyalty verification escalates 73% of the time — Copilot lacks read access to mileage system",
+    type: "Tool Build",
+    priority: "High",
+    impactValue: "+12pp Containment",
+    impactLabel: "Loyalty intent",
+    projectedROI: "$190K/yr",
+    handoffsPerDay: 1842,
+    affectedIntent: "Loyalty Status & Mileage",
+    escalationsToday: 1342,
+    csatImpact: "+6.8%",
+    estFixTime: "< 1 hour",
+    whatWillHappen:
+      "Voya-Loyalty agent will gain real-time read access to the mileage and tier system, eliminating the manual specialist lookup that today escalates 73% of loyalty intents and frustrates premium travelers during disruption events.",
+  },
+  {
+    id: 10,
+    title: "Publish Knowledge: Hotel & Car Disruption Vouchers",
+    description:
+      "Add hotel and car voucher policy and redemption steps to the agent knowledge base",
+    note: "71% of knowledge-gap conversations escalate — vouchers are the top missing topic",
+    type: "Process Change",
+    priority: "High",
+    impactValue: "-71% Knowledge-Gap Escalations",
+    impactLabel: "Disruption ground recovery",
+    projectedROI: "$420K/yr",
+    handoffsPerDay: 980,
+    affectedIntent: "Hotel & Car Recovery",
+    escalationsToday: 695,
+    csatImpact: "+4.2%",
+    estFixTime: "< 4 hours",
+    whatWillHappen:
+      "A new knowledge collection covering Voya's overnight hotel and ground-transport voucher policy will be published, indexed, and tested across the Voya-Disruption and Voya-Concierge agents — closing the largest knowledge gap surfaced in the past week.",
+  },
 ];
 
 /** Critical recommended actions (High priority) — shown in AI assistant panel */
@@ -184,6 +241,9 @@ export const actionIconMap: Record<number, ComponentType<{ className?: string }>
   5: ShieldCheck,   // Account Unlock Tool
   6: Route,         // Smart Routing Engine
   7: CreditCard,    // Billing Inquiry Automation
+  8: Plane,         // Partner Airline Seat Booking
+  9: Award,         // Loyalty Status & Mileage Lookup
+  10: BookOpen,     // Hotel & Car Disruption Vouchers
 };
 
 export const actionIconColors: Record<number, { bg: string; text: string }> = {
@@ -194,6 +254,9 @@ export const actionIconColors: Record<number, { bg: string; text: string }> = {
   5: { bg: "bg-violet-100 dark:bg-violet-950/30", text: "text-violet-600 dark:text-violet-400" },
   6: { bg: "bg-emerald-100 dark:bg-emerald-950/30", text: "text-emerald-600 dark:text-emerald-400" },
   7: { bg: "bg-rose-100 dark:bg-rose-950/30", text: "text-rose-600 dark:text-rose-400" },
+  8: { bg: "bg-sky-100 dark:bg-sky-950/30", text: "text-sky-600 dark:text-sky-400" },
+  9: { bg: "bg-amber-100 dark:bg-amber-950/30", text: "text-amber-600 dark:text-amber-400" },
+  10: { bg: "bg-emerald-100 dark:bg-emerald-950/30", text: "text-emerald-600 dark:text-emerald-400" },
 };
 
 // Fallback icon for actions not in the map
