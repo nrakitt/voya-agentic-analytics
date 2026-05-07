@@ -9,7 +9,7 @@ import {
 } from "./ui/dialog";
 import { toast } from "sonner";
 import type { RecommendedAction } from "../data/recommended-actions";
-import { typeColors, actionIconMap, defaultActionIcon } from "../data/recommended-actions";
+import { actionIconMap, defaultActionIcon } from "../data/recommended-actions";
 
 interface RecommendedActionSheetProps {
   action: RecommendedAction | null;
@@ -27,6 +27,11 @@ export function RecommendedActionSheet({
   if (!action) return null;
 
   const IconComp = actionIconMap[action.id] ?? defaultActionIcon;
+  const deployButtonLabel = action.title.startsWith("Create Skill:")
+    ? "Deploy Skill Now"
+    : action.title.includes("Copilot")
+      ? "Deploy Copilot Now"
+      : "Deploy Agent Now";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -78,26 +83,6 @@ export function RecommendedActionSheet({
             </div>
             <div className="rounded-lg border border-border p-3">
               <p className="text-[11px] tracking-wider text-muted-foreground uppercase mb-1">
-                Est. Fix Time
-              </p>
-              <p className="text-sm font-normal">{action.estFixTime}</p>
-            </div>
-          </div>
-
-          {/* Additional info */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-lg border border-border p-3">
-              <p className="text-[11px] tracking-wider text-muted-foreground uppercase mb-1">
-                Type
-              </p>
-              <span
-                className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs ${typeColors[action.type]}`}
-              >
-                {action.type}
-              </span>
-            </div>
-            <div className="rounded-lg border border-border p-3">
-              <p className="text-[11px] tracking-wider text-muted-foreground uppercase mb-1">
                 Projected ROI
               </p>
               <p className="text-sm font-normal text-green-700 dark:text-green-400">
@@ -146,7 +131,7 @@ export function RecommendedActionSheet({
             }}
           >
             <Bot className="h-4 w-4 mr-2" />
-            Deploy Agent Now
+            {deployButtonLabel}
           </Button>
           {onDismiss && (
             <Button

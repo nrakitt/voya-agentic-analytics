@@ -66,10 +66,9 @@ export const recommendedActionsData: RecommendedAction[] = [
   },
   {
     id: 3,
-    title: "Enable AI Copilot for All Agents",
-    description:
-      "Activate AI assistance for all customer service representatives",
-    note: "AI Copilot reduces human agent time by 38% when active",
+    title: "Enable Copilot",
+    description: "Activate Copilot for all agents",
+    note: "Copilot reduces AHT by 38% when active",
     type: "AI Agent",
     priority: "High",
     impactValue: "-38% Handle Time",
@@ -81,7 +80,7 @@ export const recommendedActionsData: RecommendedAction[] = [
     csatImpact: "+4.1%",
     estFixTime: "< 1 hour",
     whatWillHappen:
-      "AI Copilot will be activated across all agent desktops, providing real-time suggestions, auto-drafted responses, and contextual knowledge lookups. Expected to reduce average handle time by 38% while improving first-contact resolution.",
+      "Copilot will be activated across all agent desktops, providing real-time suggestions, auto-drafted responses, and contextual knowledge lookups. Expected to reduce average handle time by 38% while improving first-contact resolution.",
   },
   {
     id: 4,
